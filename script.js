@@ -1,11 +1,18 @@
 'use strict';
 
-// Modal window
+/*-------- const and let ------------*/
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const nav = document.querySelector('.nav');
+const btnScroollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
 
+/*-------- modal window ------------*/
 const openModal = e => {
   e.preventDefault();
   modal.classList.remove('hidden');
@@ -31,9 +38,6 @@ document.addEventListener('keydown', e => {
 });
 
 /*-------- button scrolling ------------*/
-const btnScroollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('#section--1');
-
 btnScroollTo.addEventListener('click', () => {
   section1.scrollIntoView({ behavior: 'smooth' });
 });
@@ -49,10 +53,6 @@ document.querySelector('.nav__links').addEventListener('click', e => {
 });
 
 /*-------- tabbed component (tabs) ------------*/
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
-
 tabsContainer.addEventListener('click', e => {
   const clicked = e.target.closest('.operations__tab');
   // when click not element
@@ -70,4 +70,34 @@ tabsContainer.addEventListener('click', e => {
   document
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('operations__content--active');
+});
+
+/*-------- menu fade animation ------------*/
+const handleHover = function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(item => {
+      if (item !== link) {
+        item.style.opacity = this;
+      }
+    });
+    logo.style.opacity = this;
+  }
+};
+
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+
+nav.addEventListener('mouseout', handleHover.bind(1));
+
+/*-------- sticky  navigation ------------*/
+const initialCoords = section1.getBoundingClientRect();
+window.addEventListener('scroll', () => {
+  if (window.scrollY > initialCoords.top) {
+    nav.classList.add('sticky');
+  } else {
+    nav.classList.remove('sticky');
+  }
 });
